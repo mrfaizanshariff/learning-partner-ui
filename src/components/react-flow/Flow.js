@@ -31,24 +31,31 @@ function Flow() {
     const [answerData, setAnswerData] = useState('Dummy answer');
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isActive, setIsActive] = useState(false);
-    const [nodeData, setNodeData] = useState()
 
   const onNodeClick = (event, node) => {
     setselectedNode(node);
     setSelectedNodePosition(node.position);
     setIsActive(!isActive);
     setNodeSelection({selectedNodeId: node.id,isSelected: true});
-    console.log(event)
-    console.log(node)
   };
   const addNodeAsChild = () => {
-    getAnswer('',)
+
+    const payload={
+      question_keyword:selectedKeyword,
+      root_topic: nodes[0]?.data?.keyword,
+      response: nodes.filter(node=> selectedNode.parentId === node.id).map(node=> node.data.answer).toString(),
+      question1: nodes.filter(node=> selectedNode.parentId === node.id).map(node=> node.data.keyword).toString()
+    }
+    console.log(payload)
+    getAnswer(payload).subscribe(answer =>{
+      console.log(answer)
+    })
     if (selectedNode.id) {
       const newNodeId = nodes.length + 1 + selectedNode.id;
       const newNode = {
         id: newNodeId,
         type:'customNode',
-        data: { keyword: selectedKeyword,answer:answerData,id:newNodeId },
+        data: { keyword: selectedKeyword,answer:answerData+newNodeId,id:newNodeId },
         position: { x: selectedNodePosition.x + 10, y: selectedNodePosition.y + 80  },
         parentId: selectedNode.id,
       };
@@ -64,13 +71,29 @@ function Flow() {
       setEdges((eds) => eds.concat(newEdge));
       setIsModalOpen(false)
     }
+    
+    // nodes.forEach(element => {
+    //   if(selectedNode.id.length-1 == element.id.length){
+    //     if(selectedNode.id.includes(Number(element.id))){
+    //       prevNode = element
+    //     }
+    //   }
+    // });
   };
+  const deleteNode=()=>{
+    // need to find the selected id and also check the nodes which includes the selectedid
+    // in their id string, if yes delete those and the corresponding edges also similar to node deletion
+    if(selectedNode && selectedNode.id != 1){
+      const nodesTobeDeleted = nodes.filter(node => !node.id.includes(selectedNode.id))
+      const edgesTobeDeleted = edges.filter(edge => !edge.id.includes(selectedNode.id))
+      setNodes(nodesTobeDeleted);
+      setEdges(edgesTobeDeleted);
+    }
+  }
   const onKeywordSelect = (keyword)=>{
-    if(selectedNode.id){
+    if(selectedNode?.id){
       setSelectedKeyword(keyword)
       setIsModalOpen(true)
-      console.log(keyword)
-
     }
   }
   const onModalClose =()=>{
@@ -82,6 +105,7 @@ function Flow() {
     setNodeSelection({selectedNodeId:-1,isSelected:false});
 
   }
+ 
   return (
     <div style={{ height: '100%' }}>
       <div className='keyword-panel'>
@@ -90,6 +114,9 @@ function Flow() {
             {keyword}
           </button>
         ))}
+        <button onClick={deleteNode}>
+          Delete Node
+        </button>
       </div>
       <div className='upload-btn-container'>
         <UploadButton/>

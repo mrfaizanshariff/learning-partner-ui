@@ -7,8 +7,6 @@ const CustomNode = ({data}) => {
     const [isActive,setIsActive] = useState(false)
    useEffect(() => {
     const unsubscribe = nodeSelectionObservable((val)=>{
-        console.log('val :', val )
-        console.log('data :', data )
         if(val?.selectedNodeId == data?.id)
         setIsActive(true);
         else

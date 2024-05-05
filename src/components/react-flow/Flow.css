@@ -4,7 +4,7 @@
     right: 0;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    /* grid-template-rows: 1fr 1fr; */
+    grid-template-rows: 1fr 1fr 1fr 0.5fr;
     gap: 20px;
     border: 1px solid #333;
     padding: 1rem;
@@ -83,17 +83,19 @@
   
   /* Close button */
   .close-button {
-    color: #aaa;
-    float: right;
+    padding: 6px 18px;
     font-size: 16px;
-    padding: 4px 8px;
+    background: blanchedalmond;
+    border: 1px solid darkgrey;
+    border-radius: 4px;
+    box-shadow: 5px 3px 12px lightblue;
+    cursor: pointer;
     font-weight: bold;
   }
   
   .close-button:hover,
   .close-button:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
+    border: 1px solid palevioletred;
+    box-shadow: 1px 3px 12px palevioletred;
   }
   

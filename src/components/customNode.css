@@ -14,7 +14,8 @@ hr{
     cursor: pointer;
 }
 .active{
-    border: 2px solid red;
+    outline: 2px solid palevioletred;
+    border: 1px solid palevioletred;
     border-radius: 10px;
 
 }
